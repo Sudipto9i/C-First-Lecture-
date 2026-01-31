@@ -1,3 +1,10 @@
+// Singly Linked List 
+// Insert At First Position
+// Insert At End
+// Insert At a digit in a particular position
+// Delete a digit / Deletion
+// Reverse of a Linked List 
+// Search a Digit in a Particular Position
 #include <iostream>
 using namespace std;
 // Node Structure
@@ -110,6 +117,40 @@ public:
         delete temp;
         return;
     }
+    // Reverse a Linked List 
+    // Reverse means to change in arrows not data 
+    void reverse(){
+        // 3 Pointers 
+        Node* prev =nullptr;// Previous = Node behind current noode
+        Node* curr= head ; // Current = Current Node / Present Linked List 
+        Node* next= nullptr;// next = Save next node 
+        while(curr!=nullptr){
+            next = curr->next;// Save Current neext;
+            curr->next = prev;
+            prev=curr;// Move previous 
+            curr=next;// Move Current
+        }
+        head = prev;
+       // head -> 5 -> 10 ->20->NULL
+       // head / Current -> 20->10->5->NULL
+       // Next = [10];
+       // Current -> next = NULL;
+       // Result : 5-> NULL;
+       // prev= 5;
+       // Curr=10;
+    }
+    //Search At a data in Linked List
+    bool search(int key){
+        // Always use a temporary pointer 
+        Node* temp = head;//Start from head
+        while(temp!=nullptr){
+            if(temp->data==key){
+                return true;// found 
+            }
+            temp=temp->next;// move forward 
+        }
+        return false;// not found 
+    }
     // Traversal Display
     void display()
     {
@@ -131,6 +172,13 @@ int main()
     myList.insertAtPosition(15,3);
     myList.display();
     myList.deleteAtValue(10);
+    myList.display();
+    if (myList.search(3)){
+        cout<<"Found."<<endl;
+    }else{
+        cout<<"Not Found."<<endl;
+    }
+    myList.reverse();
     myList.display();
     return 0;
 }
