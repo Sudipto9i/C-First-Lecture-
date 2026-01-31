@@ -1,116 +1,136 @@
-#include<iostream>
-using namespace std ;
-class Node{
-    public:
-    int data;
-    Node* next;
-    Node(int val){
+#include <iostream>
+using namespace std;
+// Node Structure
+class Node
+{
+public:
+    int data;   // Stores Value
+    Node *next; // Stores address to next node
+    // Constructor
+    Node(int val)
+    {
         data = val;
-        next = NULL;
+        next = nullptr;
     }
 };
-class List{
-    Node* head;
-    Node* tail;
+
+// Insert At End
+class LinkedList
+{
 public:
-    List(){
-        head=tail=NULL;
+    Node *head;
+    LinkedList()
+    {
+        head = nullptr;
     }
-    void push_front(int val){//O(1)
-        Node* newNode = new Node(val);//dynamic
-        //Node newNode(val);//static 
-        if(head==NULL){
-            head=tail=newNode;
-            return;
-        }else{
-            newNode -> next =head;
+    // Insert At Beginning
+    void insertAtBeginning(int val)
+    {
+        // Step-1: Create new Node
+        Node *newNode = new Node(val);
+        // Step-2 : Newnode point to current head
+        newNode->next = head;
+        // Step-3 : Move head to newNode
+        head = newNode;
+    }
+    void insertAtEnd(int val)
+    {
+        // Step-1 :  Create new Node
+        Node *newNode = new Node(val);
+        // If list is empty
+        if (head == NULL)
+        {
             head = newNode;
-        }
-    }
-    void push_back(int val){//O(1)
-        Node* newNode=new Node(val);
-        if(head==NULL){
-            head=tail=newNode;
-        }else{
-            tail->next=newNode;
-            tail=newNode;
-        }
-    }
-    void pop_front(){//O(1)
-        if(head==NULL){
-            cout<<"LL is empty\n";
             return;
         }
-        Node* temp=head;
-        head = head ->next;
-        temp->next=NULL;
-        delete temp;
-    }
-    void pop_back(){//O(n)
-        if(head==NULL){
-            cout<<"LL is empty."<<endl;
-            return;
+        // Step-2 : Traverse to last node
+        Node *temp = head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
         }
-        Node* temp=head;
-        while(temp->next!=tail){
-            temp=temp->next;
-        }
-        temp->next=NULL;
-        delete tail;
-        tail=temp;
-    }
-    void insert(int val,int pos){//O(n)
-        if(pos<0){
-            cout<<"Invalid position."<<endl;
-            return ;
-        }
-        if(pos==0){
-            push_front(val);
-            return;
-        }
-        Node* temp=head;
-        for(int i=0;i<pos-1;i++){
-            if(temp==NULL){
-                cout<<"invalid pos\n";
-                return;
-            }
-            temp=temp->next;
-        }
-        Node* newNode = new Node(val);
-        newNode->next=temp->next;
+        // Step-3 : Attach new Node at end
         temp->next = newNode;
     }
-    void printLL(){//O(n)
-        Node* temp = head;
-        while(temp!=NULL){
-           cout<<temp->data<<"->";
-           temp=temp->next; 
+    // InsertAtPosition 
+    void insertAtPosition(int key,int k){
+        if(k<0){
+            cout<<"Invalid Position"<<endl;
+            return;
         }
-        cout<<"NULL"<<endl;
-    }
-    int search(int key){//O(n)
-        Node* temp=head;
-        int idx=0;
-        while(temp!=NULL){
-            if(temp->data==key){
-                return idx;
-            }
-            temp=temp->next;
-            idx++;
+        Node* newNode = new Node(key);
+        if(k==0){
+            newNode->next=head;
+            head=newNode;
+            return;
         }
-        return -1;
+        int counter =1 ;
+        Node* current;
+        current = head;
+        while(current!=nullptr&&counter<(k-1)){
+            current=current->next;
+            counter++;
+        }
+        if(current==nullptr){
+            cout<<"Invalid Position"<<endl;
+            delete newNode;
+            return;
+        }
+        newNode->next = current ->next;
+        current->next = newNode;
+        return;
     }
-}; 
-int main(){
-    List ll;
-    ll.push_front(3);
-    ll.push_front(2);
-    ll.push_front(1);
+    // Delete a Particular Position
+    void deleteAtValue(int key){
+        if(head==nullptr){
+            cout<<"Invalid Position"<<endl;
+            return;
+        }
 
-    ll.insert(4,0);
-    ll.printLL();
-    cout<<ll.search(3)<<endl;
-    
+        // Delete at first position
+        Node *temp;
+        if(head->data==key){
+            temp=head;
+            head=head->next;
+            delete temp;
+            return;
+        }
+        // Delete at middle or end
+        Node *current;
+        current = head; 
+        while(current->next!=nullptr&&current->next->data!=key){
+            current = current ->next;
+        }
+        if(current->next==nullptr){
+            cout<<"Element not found"<<endl;
+            return;
+        }
+        temp=current->next;
+        current->next = current->next->next;
+        delete temp;
+        return;
+    }
+    // Traversal Display
+    void display()
+    {
+        Node *temp = head;
+        while (temp != NULL)
+        {
+            cout << temp->data << "->";
+            temp = temp->next;
+        }
+        cout << "NULL" << endl;
+    }
+};
+int main()
+{
+    LinkedList myList;
+    myList.insertAtBeginning(5);
+    myList.insertAtEnd(10);
+    myList.insertAtEnd(20);
+    myList.insertAtPosition(15,3);
+    myList.display();
+    myList.deleteAtValue(10);
+    myList.display();
     return 0;
-
 }
