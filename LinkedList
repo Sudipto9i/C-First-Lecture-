@@ -1,10 +1,12 @@
-// Singly Linked List 
+/*
+// Singly Linked List
 // Insert At First Position
 // Insert At End
 // Insert At a digit in a particular position
 // Delete a digit / Deletion
-// Reverse of a Linked List 
+// Reverse of a Linked List
 // Search a Digit in a Particular Position
+// Sorted Element (Ascending Order)
 #include <iostream>
 using namespace std;
 // Node Structure
@@ -59,7 +61,7 @@ public:
         // Step-3 : Attach new Node at end
         temp->next = newNode;
     }
-    // InsertAtPosition 
+    // InsertAtPosition
     void insertAtPosition(int key,int k){
         if(k<0){
             cout<<"Invalid Position"<<endl;
@@ -104,7 +106,7 @@ public:
         }
         // Delete at middle or end
         Node *current;
-        current = head; 
+        current = head;
         while(current->next!=nullptr&&current->next->data!=key){
             current = current ->next;
         }
@@ -117,17 +119,17 @@ public:
         delete temp;
         return;
     }
-    // Reverse a Linked List 
-    // Reverse means to change in arrows not data 
+    // Reverse a Linked List
+    // Reverse means to change in arrows not data
     void reverse(){
-        // 3 Pointers 
+        // 3 Pointers
         Node* prev =nullptr;// Previous = Node behind current noode
-        Node* curr= head ; // Current = Current Node / Present Linked List 
-        Node* next= nullptr;// next = Save next node 
+        Node* curr= head ; // Current = Current Node / Present Linked List
+        Node* next= nullptr;// next = Save next node
         while(curr!=nullptr){
             next = curr->next;// Save Current neext;
             curr->next = prev;
-            prev=curr;// Move previous 
+            prev=curr;// Move previous
             curr=next;// Move Current
         }
         head = prev;
@@ -141,16 +143,17 @@ public:
     }
     //Search At a data in Linked List
     bool search(int key){
-        // Always use a temporary pointer 
+        // Always use a temporary pointer
         Node* temp = head;//Start from head
         while(temp!=nullptr){
             if(temp->data==key){
-                return true;// found 
+                return true;// found
             }
-            temp=temp->next;// move forward 
+            temp=temp->next;// move forward
         }
-        return false;// not found 
+        return false;// not found
     }
+
     // Traversal Display
     void display()
     {
@@ -181,4 +184,295 @@ int main()
     myList.reverse();
     myList.display();
     return 0;
+}
+// Sorted a Linked List 
+// Delete Duplicate Elements 
+#include <iostream>
+using namespace std;
+class Node
+{
+public:
+    int data;
+    Node *next;
+    Node(int val)
+    {
+        data = val;
+        next = nullptr;
+    }
+};
+class LinkedList
+{
+public:
+    Node *head;
+    LinkedList()
+    {
+        head = nullptr;
+    }
+    // InsertAtFirstPosition
+    void insertAtFirstPosition(int key){
+        Node* newNode = new Node(key);
+        newNode->next = head ;
+        head = newNode;
+    }
+    // Insert At Last Position
+    void insertAtLastPosition(int key){
+        Node* newNode = new Node(key);
+        if(head == nullptr){
+            cout<<"Invalid Linked List."<<endl;
+            return;
+        }
+        Node* temp=head;
+        while(temp->next!=nullptr){
+            temp= temp->next ;
+        }
+        temp->next = newNode ;
+    }
+    // Delete Duplicates
+    void deleteDuplicates()
+    {
+        if (head == nullptr)
+            return;
+        Node *current = head;
+        while (current != nullptr && current->next != nullptr)
+        {
+            if (current->data == current->next->data)
+            {
+                Node *temp = current->next;
+                current->next = current->next->next;
+                delete temp;
+            }
+            else
+            {
+                current = current->next;
+            }
+        }
+    }
+    // Sorted a Linked List (Ascending Order)
+    void sortedAlinkedList(int key)
+    {
+        // Create a newNode -> newNode->data:=key and newNode->next:=NULL
+        Node *newNode = new Node(key);
+        // Insert At First Position
+        if (head == nullptr || key < head->data)
+        {
+            newNode->next = head;
+            head = newNode;
+            return;
+        }
+        Node *current = head;
+        while (current->next != nullptr && current->next->data < key)
+        {
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+    // Traversal Display
+    void display()
+    {
+        Node *temp = head;
+        while (temp != nullptr)
+        {
+            cout << temp->data << "->";
+            temp = temp->next;
+        }
+        cout << "X" << endl;
+    }
+};
+int main()
+{
+    LinkedList myList;
+   // myList.sortedAlinkedList(5);
+    //myList.sortedAlinkedList(2);
+    //myList.sortedAlinkedList(10);
+    //myList.sortedAlinkedList(30);
+    //myList.sortedAlinkedList(1);
+    myList.insertAtFirstPosition(2);
+    myList.insertAtLastPosition(5);
+    myList.insertAtLastPosition(7);
+    myList.insertAtLastPosition(7);
+    myList.insertAtLastPosition(9);
+    myList.deleteDuplicates();
+    myList.display();
+}
+#include<iostream>
+using namespace std ;
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int val){
+        data = val;
+        next = nullptr;
+    }
+};
+class LinkedList{
+    public:
+    Node* head;
+    LinkedList(){
+        head = nullptr;
+    }
+    // Insert At End;
+    void insertAtEnd(int key){
+        Node* newNode = new Node(key);
+        if(head==nullptr){
+            head = newNode;
+            return;
+        }
+        Node* temp=head;
+        while(temp->next!=nullptr){
+            temp=temp->next;
+        }
+        temp->next = newNode;
+    }
+    void display(){
+        Node* temp= head;
+        while(temp!=nullptr){
+            cout<<temp->data<<"->";
+            temp=temp->next;
+        }
+        cout<<"X"<<endl;
+    }
+};
+// Function to check identical 
+bool areIdentical(Node* h1 , Node*h2){
+    while(h1!=nullptr&&h2!=nullptr){
+        // This line checks value :
+        if(h1->data!=h2->data){
+            return false;
+        }
+        h1 = h1->next;
+        h2 = h2->next;
+    }
+    // This line checks length:
+    return(h1==nullptr&&h2==nullptr);
+}
+int main(){
+    LinkedList l1 ;
+    LinkedList l2 ;
+    l1.insertAtEnd(5);
+    l1.insertAtEnd(10);
+    l1.insertAtEnd(20);
+    cout<<"Linked List-1 : "<<endl;
+    l1.display();
+
+    l2.insertAtEnd(5);
+    l2.insertAtEnd(10);
+    l2.insertAtEnd(20);
+    cout<<"Linked List-2: "<<endl;
+    l2.display();
+    if(areIdentical(l1.head,l2.head))
+        cout<<"Lists are identical\n";
+    else  
+        cout<<"Lists are Not identical\n";
+    return 0;
+}*/
+// Delete the Linked List
+// Merge Two Linked List 
+#include<iostream>
+using namespace std;
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int val){
+        data = val;
+        next=nullptr;
+    }
+};
+class LinkedList{
+    public:
+    Node* head;
+    LinkedList(){
+        head = nullptr;
+    }
+    // Just Comment Out this for my merge two linked lists 
+   // void insertAtFirst(int key){
+      //  Node* newNode = new Node(key);
+      //  newNode->next = head ;
+       // head = newNode;
+    //}
+    void insertAtEnd(int key){
+        Node* newNode = new Node(key);
+        if(head == nullptr){
+            head = newNode ;
+            return;
+        }
+        Node* temp= head;
+        while(temp->next!=nullptr){
+            temp=temp->next;
+        }
+        temp->next = newNode;
+    }
+    // Merge two linked lists
+    void merge (LinkedList &other){
+        if(head == nullptr){
+            head = other.head;
+            return;
+        }
+        Node* temp=head;
+        while(temp->next!=nullptr){
+            temp=temp->next;
+        }
+        temp->next=other.head;
+    }
+    // Check if list is sorted 
+    bool isSorted(){
+        if(head==nullptr||head->next==nullptr){
+            return true;
+        }
+        Node* temp= head;
+        while(temp->next!=nullptr){
+            if(temp->data>temp->next->data){
+                return false ;
+            }
+            temp=temp->next;
+        }
+        return true ;
+    }
+   
+    void display(){
+        Node* temp = head ;
+        while(temp!=nullptr){
+            cout<<temp->data<<"->";
+            temp=temp->next;
+        }
+        cout<<"X"<<endl;
+    }
+     // Destructor: delete entire list
+   // ~LinkedList(){
+     //   Node* current =head ;
+      //  while(current!=nullptr){
+      //      Node* temp=current ;
+      //      current = current ->next;
+       //     delete temp;
+       // }
+       // head = nullptr;
+       // cout<<"Linked list memmory freed!"<<endl;
+   // }
+};
+int main(){
+    LinkedList l1 , l2 ;
+   // myList.insertAtFirst(5);
+    l1.insertAtEnd(10);
+    l1.insertAtEnd(20);
+    l1.insertAtEnd(30);
+    cout<<"List 1: ";
+    l1.display();
+    l2.insertAtEnd(35);
+    l2.insertAtEnd(45);
+    l2.insertAtEnd(55);
+    cout<<"List 2: ";
+    l2.display();
+    l1.merge(l2);
+    cout<<"Merged List: ";
+    l1.display();
+    if(l1.isSorted()){
+        cout<<"List is sorted"<<endl;
+    }else{
+        cout<<"List is nnot sorted "<<endl;
+    }
+
+    // Destructor runs automatically here
+    return 0 ;
 }
