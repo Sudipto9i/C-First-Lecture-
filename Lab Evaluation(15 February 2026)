@@ -112,6 +112,34 @@ class LinkedList{
         return true;
 
     }
+    // Check if two linked lists are identical
+    bool areIdentical(Node* h1 , Node*h2){
+        while(h1!=nullptr && h2!=nullptr){
+            if(h1->data!=h2->data){
+                return false ;
+            }
+            h1 = h1->next;
+            h2=h2->next;
+        }
+        return(h1==nullptr&&h2==nullptr);
+    }
+    // Merge two singly linked list
+    Node* mergeLists(Node* h1, Node* h2){
+        if(h1==nullptr)return h2;
+        if(h2==nullptr)return h1;
+        Node* result = nullptr;
+        if(h1->data<=h2->data){
+            result = h1 ;
+            result->next=mergeLists(h1->next,h2);
+        }else{
+            result=h2;
+            result->next=mergeLists(h1,h2->next);
+        }
+        return result;
+    }
+    Node* getHead(){
+        return head;
+    }
     ~LinkedList(){
         Node* current=head;
         while(current!=nullptr){
@@ -132,7 +160,7 @@ class LinkedList{
     }
 };
 int main(){
-    LinkedList myList;
+    LinkedList l1,l2;
    // myList.insertAtFirst(5);
    // myList.insertAtLast(10);
     //myList.insertAtLast(15);
@@ -142,17 +170,40 @@ int main(){
     //myList.insertElementKthPos(10,1);
     //myList.insertElementKthPos(15,2);
     //myList.insertElementKthPos(20,3);
-    myList.sortedLinkedList(5);
-    myList.sortedLinkedList(10);
-    myList.sortedLinkedList(15);
-    myList.sortedLinkedList(15);
-    myList.sortedLinkedList(20);
-    myList.display();
-    myList.deleteDuplicates();
-    myList.display();
-    if(myList.checkSorted()){
-        cout<<"Linked list is sorted."<<endl;
+    //myList.sortedLinkedList(5);
+    //myList.sortedLinkedList(10);
+    //myList.sortedLinkedList(15);
+    //myList.sortedLinkedList(15);
+    //myList.sortedLinkedList(20);
+    //myList.display();
+    //myList.deleteDuplicates();
+    //myList.display();
+    //if(myList.checkSorted()){
+        //cout<<"Linked list is sorted."<<endl;
+    //}else{
+       // cout<<"Linked list is not sorted."<<endl;
+    //}
+    // List 1 
+    l1.insertAtLast(1);
+    l1.insertAtLast(4);
+    l1.insertAtLast(7);
+    l1.display();
+    l2.insertAtLast(2);
+    l2.insertAtLast(5);
+    l2.insertAtLast(8);
+    l2.display();
+    if(l1.areIdentical(l1.getHead(),l2.getHead())){
+        cout<<"Lists are identical\n";
     }else{
-        cout<<"Linked list is not sorted."<<endl;
+        cout<<"Lists are not identical\n";
     }
+    Node* merged = l1.mergeLists(l1.getHead(), l2.getHead());
+
+    Node* temp = merged;
+    cout<<"Merged list: ";
+    while(temp != nullptr){
+        cout<<temp->data<<"->";
+        temp = temp->next;
+    }
+    cout<<"X\n";
 }
