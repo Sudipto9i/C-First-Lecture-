@@ -1,0 +1,158 @@
+// 1 . Insert an element at the first position
+// 2 . Insert an element at kth position
+// 3 . Insert an element at the last position
+// 4 . Insert an element to a sorted (in ascending order)
+#include<iostream>
+using namespace std;
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int val){
+        data = val;
+        next = nullptr;
+    }
+};
+class LinkedList{
+    private:
+    Node* head;
+    public:
+    LinkedList(){
+        head = nullptr;
+    }
+    // 1 . Insert an element at the first position
+    void insertAtFirst(int key){
+        Node* newNode = new Node(key);
+        newNode->next = head;
+        head = newNode;
+    }
+    // 3 . Insert an element at the last position
+    void insertAtLast(int key){
+        Node* newNode = new Node(key);
+        if(head==nullptr){
+            head = newNode;
+            return;
+        }
+        Node* temp=head ;
+        while(temp->next!=nullptr){
+            temp= temp->next;
+        }
+        newNode->next = temp->next;
+        temp->next = newNode;
+    }
+    // 2 . Insert an element at kth position
+    void insertElementKthPos(int n , int k){
+        if(k<0){
+            cout<<"Invalid Position"<<endl;
+            return;
+        }
+        Node* newNode = new Node(n);
+        if(k==0){
+            newNode->next = head;
+            head = newNode;
+            return;
+        }
+        int counter = 0;
+        Node* current = head;
+        while(current->next!=nullptr&&counter<(k-1)){
+            current=current->next;
+            counter++;
+        }
+        if(current==nullptr){
+            cout<<"Invalid Linked List"<<endl;
+            delete newNode;
+            return;
+        }
+        newNode->next = current->next;
+        current ->next = newNode;
+    }
+    // 4 . Insert an element to a sorted (in ascending order)
+    void sortedLinkedList(int key){
+        Node* newNode = new Node(key);
+        if(head ==nullptr||key<head->data){
+            newNode->next = head ;
+            head = newNode;
+            return;
+        }
+        Node* current = head ;
+        while (current->next!=nullptr&&current->next->data<key){
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+    //Delete duplicates elements 
+    void deleteDuplicates(){
+        if(head == nullptr) return;
+
+        Node* current=head;
+        while(current!=nullptr&&current->next!=nullptr){
+            if(current->data == current->next->data){
+                Node* temp=current->next;
+                current->next = current ->next->next;
+                delete temp;
+                return;
+            }else{
+                current = current->next;
+            }
+        }
+    }
+    //Check whether a singly linked list is sorted or not
+    bool checkSorted(){
+        if(head==nullptr||head->next==nullptr){
+            return true;
+        }
+        Node* current=head;
+        while(current->next!=nullptr){
+            if(current->data>current->next->data){
+                return false;
+            }
+            current=current->next;
+        }
+        return true;
+
+    }
+    ~LinkedList(){
+        Node* current=head;
+        while(current!=nullptr){
+            Node* temp=current;
+            current= current->next;
+            delete temp;
+        }
+        head = nullptr;
+        cout<<"So , your is freed now."<<endl;
+    }
+    void display(){
+        Node* temp=head;
+        while(temp!=nullptr){
+            cout<<temp->data<<"->";
+            temp= temp->next;
+        }
+        cout<<"X"<<endl;
+    }
+};
+int main(){
+    LinkedList myList;
+   // myList.insertAtFirst(5);
+   // myList.insertAtLast(10);
+    //myList.insertAtLast(15);
+    //myList.insertAtLast(20);
+    //myList.insertAtLast(25);
+    //myList.insertElementKthPos(5,0);
+    //myList.insertElementKthPos(10,1);
+    //myList.insertElementKthPos(15,2);
+    //myList.insertElementKthPos(20,3);
+    myList.sortedLinkedList(5);
+    myList.sortedLinkedList(10);
+    myList.sortedLinkedList(15);
+    myList.sortedLinkedList(15);
+    myList.sortedLinkedList(20);
+    myList.display();
+    myList.deleteDuplicates();
+    myList.display();
+    if(myList.checkSorted()){
+        cout<<"Linked list is sorted."<<endl;
+    }else{
+        cout<<"Linked list is not sorted."<<endl;
+    }
+}
