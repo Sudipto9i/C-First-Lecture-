@@ -1,0 +1,58 @@
+// Circular Linked List is same as singly linked lists
+//Only change in Display (TRAVERSAL)process
+//So ,do ony (do-While)process instead of while process
+#include<iostream>
+using namespace std ;
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int val){
+        data = val;
+    }
+};
+class CircularLinkedList{
+    private:
+    Node* head;
+    public:
+    CircularLinkedList(){
+        head=nullptr;
+    }
+    // Insert at First
+    void insertAtFirst(int n){
+        Node* newNode = new Node(n);
+        newNode->next = head;
+        head = newNode;
+    }
+    //Insert at End
+    void insertAtEnd(int n){
+        Node* newNode = new Node (n);
+        if(head ==nullptr){
+            newNode->next = head;
+            head = newNode;
+            return;
+        }
+        Node* current = head;
+        while(current->next!=nullptr){
+            current = current ->next;
+        }
+        newNode->next = current->next;
+        current->next= newNode;
+    }
+    void display(){
+        Node * temp=head;
+        do{
+            cout<<temp->data<<"->";
+            temp=temp->next;
+        } while(temp!=nullptr);
+        cout<<"(back to head)"<<endl;
+    }
+};
+int main(){
+    CircularLinkedList c ;
+    c.insertAtEnd(1);
+    c.insertAtEnd(2);
+    c.insertAtEnd(3);
+    c.insertAtEnd(4);
+    c.display();
+}
