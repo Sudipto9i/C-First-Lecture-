@@ -1,0 +1,149 @@
+//->What is a Doubly Linked List?
+//->A doubly linked list is liked a singly linked list.....
+//->..... but each node has two pointer:
+//->one points forward
+//->one points backward
+//->So you can move both direction
+//->Each node contains:
+//->[prev|data|next]
+//NODE CLASS
+#include<iostream>
+using namespace std;
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node* prev;
+    //Constructor
+    Node(int val){
+        data=val;//Insert a value 
+        next = nullptr;//Stores next addess
+        prev = nullptr;//Stores previous address
+    }
+};
+class DoublyLinkedList{
+    private:
+    Node* head;
+    public:
+    DoublyLinkedList(){
+        head = nullptr;
+    }
+    //->Insertion
+    //Insert At First
+    void insertAtFirst(int n){
+        Node* newNode = new Node(n);
+        if(head!=nullptr){
+            head->prev = newNode;
+        }
+        newNode->next = head ;
+        head = newNode;
+    }
+    //Insert At End
+    void insertAtEnd(int n){
+        Node* newNode = new Node(n);
+        if(head==nullptr){
+            head = newNode;
+            return;
+        }
+        Node* temp=head;
+        while(temp->next!=nullptr){
+            temp=temp->next;
+        }
+        temp->next = newNode;
+        newNode->prev = temp;
+    }
+    //Insert at Position k
+    void insertAtkPosition(int n,int k){
+        if(k<0){
+            cout<<"Invalid Position"<<endl;
+            return;
+        }
+        Node* newNode = new Node(n);
+        Node* current=head;
+        // Insert At head
+        if(k==0){
+            newNode->next = head;
+            if(head!=nullptr){
+                head->prev = newNode;
+            }
+            head = newNode;
+            return;
+        }
+        int counter =0;
+        while(current!=nullptr&&counter<(k-1)){
+            current=current->next;
+            counter++;
+        }
+        if(current==nullptr){
+            cout<<"Position out of range"<<endl;
+            return;
+        }
+        newNode->next = current->next ;
+        newNode->prev = current;
+        if(current->next!=nullptr){
+            current->next->prev = newNode;
+        }
+        current->next = newNode;
+    }
+    // Delte First Node
+    void deleteFirst(){
+        if(head==nullptr)return;
+        Node* temp=head;
+        head = head->next;
+        if(head!=nullptr){
+            head->prev=nullptr;
+        }
+        delete temp;
+    }
+    //Delete Last Node
+    void deleteLast(){
+        if(head==nullptr)return;
+        Node* temp=head;
+        while(temp->next!=nullptr){
+            temp=temp->next;
+        }
+        if(temp->prev!=nullptr){
+            temp->prev->next = nullptr;
+        }else{
+            head =nullptr;
+        }
+        delete temp;
+    }
+    //Forward Traversal
+    void displayForward(){
+        Node* temp=head;
+        while(temp!=nullptr){
+            cout<<temp->data<<"->";
+            temp=temp->next;
+        }
+        cout<<"X\n";
+    }
+    //Backward Traversal
+    void displayBackward(){
+        Node* temp=head;
+        while(temp->next!=nullptr){
+            temp=temp->next;
+        }
+        while(temp!=nullptr){
+            cout<<temp->data<<"->";
+            temp=temp->prev;
+        }
+        cout<<"X\n";
+    }
+};
+int main(){
+    DoublyLinkedList d;
+    d.insertAtFirst(2);
+    d.insertAtEnd(5);
+    d.insertAtEnd(10);
+    d.insertAtEnd(15);
+    d.insertAtEnd(20);
+    d.displayForward();
+    d.displayBackward();
+    d.insertAtkPosition(3,1);
+    d.displayForward();
+    d.deleteFirst();
+    d.displayForward();
+    d.deleteLast();
+    d.displayForward();
+}
