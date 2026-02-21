@@ -1,0 +1,262 @@
+/*
+// LAB PERFORMANCE -1 
+// 1 . Reverse in Array(In-Place)
+#include<iostream>
+using namespace std;
+int main(){
+    int n;
+    cin>>n;
+    int arr[n];
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    cout<<"Original Array:";
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    int left =0;
+    int right = n-1;
+    while(left<right){
+        int temp=arr[left];
+        arr[left]=arr[right];
+        arr[right]=temp;
+        left++;
+        right--;
+    }
+    cout<<"\nReverse Array: ";
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    return 0;
+}
+
+//2.Delete element at position k
+#include<iostream>
+using namespace std;
+int main(){
+    int n;
+    cin>>n;
+    int arr[n];
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    //Shift Left(int i=pos;i<n-1;i++)n--
+    //Shift Right(int i=n;i>pos;i--)n++
+    int pos;
+    cout<<"Enter a position(0th position):";
+    cin>>pos;
+    for(int i=pos;i<n-1;i++){
+        arr[i]=arr[i+1];
+    }
+    n--;
+    cout<<"After deletion the array: ";
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    return 0;
+}
+
+//3.Insertion Element at kth position
+#include<iostream>
+using namespace std ;
+int main(){
+    int n;
+    cin>>n;
+    int arr[n];
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    cout<<"Original Array: ";
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    int val,pos;
+    cout<<"\nEnter a value:";
+    cin>>val;
+    cout<<"\nEnter a position:";
+    cin>>pos;
+    for(int i=n;i>pos;i--){
+        arr[i]=arr[i-1];
+    }
+    arr[pos]=val;
+    n++;
+    cout<<"\nAfter Insertion Array:";
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    return 0;
+}
+
+//3.Find Second Largest
+#include<iostream>
+using namespace std;
+int main(){
+    int n;
+    cin>>n;
+    int arr[n];
+    for(int i=0;i<n;i++){
+        cin>>arr[i];
+    }
+    cout<<"Original Array:";
+    for(int i=0;i<n;i++){
+        cout<<arr[i]<<" ";
+    }
+    int largest =0;
+    int second = 0;
+    for(int i=0;i<n;i++){
+        if(arr[i]>largest){
+            second = largest;
+            largest = arr[i];
+        }else if(second<arr[i]&&arr[i]!=largest){
+            second = largest;
+        }
+    }
+    cout<<"\nSecond Largest Element:"<<second<<endl;
+    return 0;
+}
+*/
+//Part 2->Linked List Practice
+#include<iostream>
+using namespace std;
+class Node{
+    public:
+    int data;
+    Node* next;
+    Node(int val){
+        data = val;
+        next = nullptr;
+    }
+};
+class LinkedList{
+    private:
+    Node* head;
+    public:
+    LinkedList(){
+        head = nullptr;
+    }
+    void insertAtBeginning(int n){
+        Node* newNode = new Node(n);
+        newNode->next = head ;
+        head = newNode;
+    }
+    void insertAtEnd(int n){
+        Node* newNode = new Node(n);
+        if(head==nullptr){
+            head = newNode;
+            return;
+        }
+        Node* temp=head;
+        while(temp->next!=nullptr){
+            temp=temp->next;
+        }
+        newNode->next = temp->next ;
+        temp->next = newNode;
+    }
+    void deleteAtParticularPosition(int n){
+        if(head==nullptr){
+            cout<<"Invalid Linked List"<<endl;
+        }
+        if(head->data==n){
+            Node* temp=head;
+            head = head->next;
+            delete temp;
+            return;
+        }
+        Node* curr=head;
+        while(curr!=nullptr&&curr->data==n){
+            curr=curr->next;
+        }
+        if(curr->next==nullptr){
+            cout<<"Invalid Data for linked list."<<endl;
+            return;
+        }
+        Node* temp=curr->next;
+        curr->next = curr->next->next;
+        delete temp;
+
+    }
+    //Search 
+    void searchNodes(int n){
+        bool found;
+        if(head==nullptr){
+            cout<<"Invalid Linked List\n";
+            return;
+        }
+        if(head->data==n){
+            found = true;
+            return;
+        }
+        Node* curr=head;
+        while(curr->next!=nullptr){
+            if(curr->data==n){
+                found = true;
+                cout<<"Found"<<endl;
+                break;
+            }
+            curr= curr->next;
+        }
+        if(!found){
+            cout<<"Not Found"<<endl;
+        }
+    }
+    void reverseLl(){
+        Node* prev= nullptr;
+        Node* curr=head;
+        Node* next = nullptr;
+        while(curr!=nullptr){
+            next = curr->next;
+            curr->next= prev;
+            prev = curr;
+            curr=next;
+        }
+        head = prev;
+    }
+    // Count Nodes
+    void countNodes(){
+        if(head == nullptr){
+            cout<<"Invalid Linked List."<<endl;
+            return;
+        }
+        int counter = 0;
+        Node* curr = head;
+        while(curr!=nullptr){
+            curr=curr->next;
+            counter++;
+        }
+        cout<<"Total Nodes:"<<counter<<endl;
+    }
+    // Middle Element 
+    void middleElement(){
+        Node* slow = head;
+        Node* fast = head;
+    
+        while(fast!=nullptr&&fast->next!=nullptr){
+            slow = slow->next;
+            fast=fast->next->next;
+        }
+        cout<<"Middle Element:"<<slow->data<<endl;
+    }
+    void display(){
+        Node* temp= head ;
+        while(temp!=nullptr){
+            cout<<temp->data<<"->";
+            temp=temp->next;
+        }
+        cout<<"X\n";
+    }
+};
+int main(){
+    LinkedList m;
+    m.insertAtBeginning(5);
+    m.insertAtEnd(10);
+    m.insertAtEnd(15);
+    m.insertAtEnd(20);
+    m.display();
+    m.deleteAtParticularPosition(10);
+    m.display();
+    m.searchNodes(15);
+    m.reverseLl();
+    m.display();
+    m.countNodes();
+    m.middleElement();
+}
